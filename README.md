@@ -34,5 +34,36 @@ Created a WordFinder class which performs the Find on a stream, some considerati
 - stream is not null not empty, each word has at least 1 char
 - returns top 10 being matched, among = number of matches the order is alphabetical
 
+Solution is organized as:
+- WordFinder: the actual WordFinder api
+- WordFinder.Test: unit tests using Theory and 10 test cases
+- WordFinder.Benchmark: benchmark using BenchmarkDotNet (https://benchmarkdotnet.org/), with large test cases.
+
 Benchmark:
-Performance on large matrix and streams is improved with parallel excecution but its not the case of small results, one could argue to perform a parallel or not depending on the size of input
+Tried the following scenarios 
+
+//Actual solution
+| Method        | Mean       | Error     | StdDev    | Median     | Allocated |
+|-------------- |-----------:|----------:|----------:|-----------:|----------:|
+| TestScenario1 |   6.790 us | 0.0661 us | 0.0586 us |   6.774 us |  10.52 KB |
+| TestScenario2 | 141.253 us | 2.7368 us | 5.3379 us | 138.686 us |  45.66 KB |
+| TestScenario3 | 490.407 us | 6.2711 us | 5.2366 us | 491.596 us |  101.6 KB |
+
+//No break on word greater than remaining: throws similar results, slightly slower, memory slightly lower.
+
+| Method        | Mean       | Error     | StdDev    | Allocated |
+|-------------- |-----------:|----------:|----------:|----------:|
+| TestScenario1 |   6.870 us | 0.0361 us | 0.0301 us |  10.68 KB |
+| TestScenario2 | 153.536 us | 3.0051 us | 5.9318 us |  45.65 KB |
+| TestScenario3 | 508.914 us | 9.0221 us | 7.9979 us | 100.95 KB |
+
+//No Parallel for each: this one is an interesting scenario, in the first case which is the sample matrix of the exercise its actually faster.
+//But on Scenario 2 and 3 with a large matrix and a large word stream it is much slower than the alternative. 
+//Allocated memory increases in parallel foreach but again it's the first scenario where the parallel might not be useful and we could be overengineering the solution
+//A possible improvement of the algo could be to decide dynamically which strategy to follow and do a normal for based on the size of the matrix and words
+
+| Method        | Mean         | Error     | StdDev    | Allocated |
+|-------------- |-------------:|----------:|----------:|----------:|
+| TestScenario1 |     2.384 us | 0.0079 us | 0.0070 us |   1.76 KB |
+| TestScenario2 |   756.692 us | 0.8356 us | 0.7816 us |  19.94 KB |
+| TestScenario3 | 3,128.868 us | 3.2189 us | 3.0110 us |  74.05 KB |
