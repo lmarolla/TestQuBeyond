@@ -1,10 +1,8 @@
 namespace WordFinder;
-
 public class WordFinder
 {
     private char[,] _leftToRightMatrix, _topToBottomMatrix;
-    
-    ///<summary>Matrix is not null, not empty and the strings are equal size</summary>>
+    ///<summary>Param: Matrix is not null, not empty and the strings are equal size</summary>>
     public WordFinder(IEnumerable<string> matrix)
     {
         _leftToRightMatrix= new char[matrix.Count(),matrix.First().Length];
@@ -26,32 +24,40 @@ public class WordFinder
     }
     
     /// <summary>Finds the words in the initialized matrix.
-    /// wordstream is not null, not empty and the strings are equal size, case is compared as is.
+    /// Param: wordstream is not null, not empty and the strings are equal size, case is compared as is.
     /// </summary>>
+
     public IEnumerable<string> Find(IEnumerable<string> wordstream)
     {
         var found = new Dictionary<string, int>();
-        Parallel.ForEach(wordstream, word =>
+        var distinctWordstream = wordstream.Distinct();
+        Parallel.ForEach(distinctWordstream, word =>
         {
-            if (Find(word,_leftToRightMatrix)|| Find(word,_topToBottomMatrix))
+            //On the matrix we count matches both Vertically and Horizontally, even if its 1 char word it will be matched
+            var leftMatches = Find(word, _leftToRightMatrix);
+            var rightMatches = Find(word,  _topToBottomMatrix);
+            var totalMatches = leftMatches + rightMatches;
+            
+            if (totalMatches>0)
             {
                 lock (found)
                 {
                     if (!found.ContainsKey(word))
-                        found.Add(word, 1);
+                        found.Add(word, totalMatches);
                     else
-                        found[word] += 1;
+                        found[word] += totalMatches;
                 }
             }
         });
-        //Assuming we want top 10 distinct values, most found with each horizontal dimension of the matrix, Im not caring about repeated words within the same row
-        return found.OrderByDescending(x => x.Value).Take(10).Select(x => x.Key).ToList();
+        //Assuming we want top 10 distinct values of the words with most number of matches, after that is alphabetically ordered
+        return found.OrderByDescending(x => x.Value).ThenBy(x=>x.Key).Take(10).Select(x => x.Key).ToList();
     }
 
-    private bool Find(string word, char[,] matrix)
+    private int Find(string word,  char[,] matrix)
     {
-        if (word.Length > matrix.GetLength(0))
-            return false;
+        var matches = 0;
+        if (word.Length > matrix.GetLength(1))
+            return matches;
         else
         {
             
@@ -63,18 +69,23 @@ public class WordFinder
                 {
                     if (matrix[i, j] == chars[foundCnt])
                         foundCnt++;
+                    else if (matrix[i, j] == chars[0])
+                        foundCnt = 1;
                     else
                         foundCnt = 0;
 
                     if (foundCnt == word.Length)
-                        return true;
+                    {
+                        matches++;
+                        foundCnt = 0;
+                    }
                     
                     //if pending to be found greater than size of the dimension just abort it
-                    if(chars.Length - foundCnt>matrix.GetLength(1)-j)
-                        break;
+                     if(chars.Length - foundCnt>matrix.GetLength(1)-j)
+                         break;
                 }
             }
         }
-        return false;
+        return matches;
     }
 }
