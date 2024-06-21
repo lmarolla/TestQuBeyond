@@ -1,3 +1,5 @@
+OBJECTIVE:
+
 Presented with a character matrix and a large stream of words, your task is to create a Class
 that searches the matrix to look for the words from the word stream. Words may appear
 horizontally, from left to right, or vertically, from top to bottom. In the example below, the word
@@ -23,3 +25,14 @@ should count it only once
 Due to the size of the word stream, the code should be implemented in a high performance
 fashion both in terms of efficient algorithm and utilization of system resources. Where possible,
 please include your analysis and evaluation.
+
+
+Solution:
+
+Created a WordFinder class which performs the Find on a stream, some considerations
+- matrix is not null not empty
+- stream is not null not empty, each word has at least 1 char
+- returns top 10 being matched, among = number of matches the order is alphabetical
+
+Benchmark:
+Performance on large matrix and streams is improved with parallel excecution but its not the case of small results, one could argue to perform a parallel or not depending on the size of input
