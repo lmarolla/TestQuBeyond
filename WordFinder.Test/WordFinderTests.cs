@@ -30,7 +30,10 @@ public class WordFinderTests
             "coldy", "cwind", "fgwio", "gilsx", "pqnsd"})]
     [InlineData(new string[] { "ab", "ba", "ab", "ba"},
         new string[] { "chill", "ab", "ba", "wind" }, new string[] { "ab", "ba" })]
-
+    [InlineData(new string[] { "a", "b", "a", "c","c"},
+        new string[] { "b", "c", "ba", "wind" }, new string[] { "c", "b","ba" })]
+    [InlineData(new string[] { "abacc"},
+        new string[] { "b", "c", "ba", "wind" }, new string[] { "c", "b","ba" })]
     public void TestWordFinder(string[] matrix, string[] words, string[] expected)
     {
         var wordFinder = new WordFinder(matrix.ToList());

@@ -24,7 +24,7 @@ public class WordFinder
     }
     
     /// <summary>Finds the words in the initialized matrix.
-    /// Param: wordstream is not null, not empty and the strings are equal size, case is compared as is.
+    /// Param: wordstream is not null, not empty and the strings are not zero size, case is compared as is.
     /// </summary>>
 
     public IEnumerable<string> Find(IEnumerable<string> wordstream)
