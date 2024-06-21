@@ -31,7 +31,7 @@ Solution:
 
 Created a WordFinder class which performs the Find on a stream, some considerations
 - matrix is not null not empty
-- stream is not null not empty
+- stream is not null not empty, each word has at least 1 char
 - returns top 10 being matched, among = number of matches the order is alphabetical
 
 Benchmark:
