@@ -42,14 +42,14 @@ Solution is organized as:
 Benchmark:
 Tried the following scenarios 
 
-//Actual solution
+-Actual solution
 | Method        | Mean       | Error     | StdDev    | Median     | Allocated |
 |-------------- |-----------:|----------:|----------:|-----------:|----------:|
 | TestScenario1 |   6.790 us | 0.0661 us | 0.0586 us |   6.774 us |  10.52 KB |
 | TestScenario2 | 141.253 us | 2.7368 us | 5.3379 us | 138.686 us |  45.66 KB |
 | TestScenario3 | 490.407 us | 6.2711 us | 5.2366 us | 491.596 us |  101.6 KB |
 
-//No break on word greater than remaining: throws similar results, slightly slower, memory slightly lower.
+-No break on word greater than remaining: throws similar results, slightly slower, memory slightly lower.
 
 | Method        | Mean       | Error     | StdDev    | Allocated |
 |-------------- |-----------:|----------:|----------:|----------:|
@@ -57,10 +57,10 @@ Tried the following scenarios
 | TestScenario2 | 153.536 us | 3.0051 us | 5.9318 us |  45.65 KB |
 | TestScenario3 | 508.914 us | 9.0221 us | 7.9979 us | 100.95 KB |
 
-//No Parallel for each: this one is an interesting scenario, in the first case which is the sample matrix of the exercise its actually faster.
-//But on Scenario 2 and 3 with a large matrix and a large word stream it is much slower than the alternative. 
-//Allocated memory increases in parallel foreach but again it's the first scenario where the parallel might not be useful and we could be overengineering the solution
-//A possible improvement of the algo could be to decide dynamically which strategy to follow and do a normal for based on the size of the matrix and words
+-No Parallel for each: this one is an interesting scenario, in the first case which is the sample matrix of the exercise its actually faster.
+But on Scenario 2 and 3 with a large matrix and a large word stream it is much slower than the alternative. 
+Allocated memory increases in parallel foreach but again it's the first scenario where the parallel might not be useful and we could be overengineering the solution
+A possible improvement of the algo could be to decide dynamically which strategy to follow and do a normal for based on the size of the matrix and words
 
 | Method        | Mean         | Error     | StdDev    | Allocated |
 |-------------- |-------------:|----------:|----------:|----------:|
