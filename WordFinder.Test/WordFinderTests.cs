@@ -34,6 +34,8 @@ public class WordFinderTests
         new string[] { "b", "c", "ba", "wind" }, new string[] { "c", "b","ba" })]
     [InlineData(new string[] { "abacc"},
         new string[] { "b", "c", "ba", "wind" }, new string[] { "c", "b","ba" })]
+    [InlineData(new string[] { "the","and"},
+        new string[] { "b", "the", "ed", "largeword" }, new string[] { "ed", "the" })]
     public void TestWordFinder(string[] matrix, string[] words, string[] expected)
     {
         var wordFinder = new WordFinder(matrix.ToList());
