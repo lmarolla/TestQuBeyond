@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xunit;
 
 namespace WordFinder;
@@ -21,6 +20,6 @@ public class WordFinderTests
         var wordFinder = new WordFinder(matrix.ToList());
         var result =wordFinder.Find(words);
         //we dont care about the order on comparing as the words matched equal number of times can be returned in diff order
-        CollectionAssert.AreEqual(expected.Order().ToList(),result.Order().ToList());
+        Assert.Equal(expected.Order().ToList(),result.Order().ToList());
     }
 }
