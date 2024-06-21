@@ -50,6 +50,7 @@ Tried the following scenarios
 | TestScenario3 | 490.407 us | 6.2711 us | 5.2366 us | 491.596 us |  101.6 KB |
 
 -Removed break on word greater than remaining: By removing the code below, throws similar results, it is slightly slower and memory allocated slightly lower.
+
 <img width="685" alt="image" src="https://github.com/lmarolla/TestQuBeyond/assets/74197657/a6df3d1f-29be-4743-9f72-11ff3f6d3f80">
 
 | Method        | Mean       | Error     | StdDev    | Allocated |
@@ -62,6 +63,7 @@ Tried the following scenarios
 But on Scenario 2 and 3 with a large matrix and a large word stream it is much slower than the alternative. 
 Allocated memory increases in parallel foreach but again it's the first scenario where the parallel might not be useful and we could be overengineering the solution
 A possible improvement of the algo could be to decide dynamically which strategy to follow and do a normal for based on the size of the matrix and words
+
 <img width="543" alt="image" src="https://github.com/lmarolla/TestQuBeyond/assets/74197657/0f8800f1-b202-4f2a-ae19-5977154bbba6">
 
 
