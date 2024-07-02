@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+
 namespace WordFinder;
 public class WordFinder
 {
@@ -29,28 +31,22 @@ public class WordFinder
 
     public IEnumerable<string> Find(IEnumerable<string> wordstream)
     {
-        var found = new Dictionary<string, int>();
-        var distinctWordstream = wordstream.Distinct();
-        Parallel.ForEach(distinctWordstream, word =>
+        var found = new ConcurrentDictionary<string, int>();
+
+        Parallel.ForEach(wordstream, word =>
         {
+            if (found.ContainsKey(word))
+                return;
             //On the matrix we count matches both Vertically and Horizontally, even if its 1 char word it will be matched
             var leftMatches = Find(word, _leftToRightMatrix);
             var rightMatches = Find(word,  _topToBottomMatrix);
             var totalMatches = leftMatches + rightMatches;
             
-            if (totalMatches>0)
-            {
-                lock (found)
-                {
-                    if (!found.ContainsKey(word))
-                        found.Add(word, totalMatches);
-                    else
-                        found[word] += totalMatches;
-                }
-            }
+            found.TryAdd(word, totalMatches);
+
         });
         //Assuming we want top 10 distinct values of the words with most number of matches, after that is alphabetically ordered
-        return found.OrderByDescending(x => x.Value).ThenBy(x=>x.Key).Take(10).Select(x => x.Key).ToList();
+        return found.Where(x=>x.Value>0).OrderByDescending(x => x.Value).ThenBy(x=>x.Key).Take(10).Select(x => x.Key);
     }
 
     private int Find(string word,  char[,] matrix)

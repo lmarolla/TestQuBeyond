@@ -6,10 +6,10 @@ namespace WordFinder.Benchmark;
 public class WordFinderBenchmark
 {
     #region test data declaration
-    static string[] matrix1 = { "abcgc", "fgwio", "chill", "pqnsd", "uvdxy" };
-    static string[] words1 = { "chill", "cold", "snow", "wind" };
+    string[] matrix1 = { "abcgc", "fgwio", "chill", "pqnsd", "uvdxy" };
+    string[] words1 = { "chill", "cold", "snow", "wind" };
 
-    static string[] matrix2 =
+    string[] matrix2 =
     {
         "lightorangejumpballtreefootnightcatdogsunstarhillcarwinwaterfire",
         "doorbridgebirdhousecakeboatgreenleabluefishmountainskycloudriver",
@@ -26,7 +26,7 @@ public class WordFinderBenchmark
         "lightfireplranertcarerrainxbrridgebreezewaterwavebirdprlantshade"
     };
 
-    static string[] words2 =
+    string[] words2 =
     {
         "chill", "cold", "snow", "wind", "frost", "blizzard", "ice", "sleet",
         "hail", "glacier", "storm", "freeze", "nippy", "icy", "wintry",
@@ -47,7 +47,7 @@ public class WordFinderBenchmark
         "nimbus", "cirrus"
     };
 
-    private static string[] words3 =
+    string[] words3 =
     {
         "apple", "orange", "banana", "grape", "kiwi", "lemon", "lime", "mango",
         "peach", "pear", "plum", "berry", "melon", "cherry", "fig", "date",
@@ -144,5 +144,11 @@ public class WordFinderBenchmark
     public void TestScenario3()
     {
         new WordFinder(matrix2).Find(words3);
+    }
+    
+    [Benchmark]
+    public void TestScenario4()
+    {
+        new WordFinder(matrix1).Find(words3);
     }
 }
